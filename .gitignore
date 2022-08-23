@@ -1,0 +1,6 @@
+node_modules/
+.next/
+pages/drafts.jsx
+pages/index-copy.jsx
+components/Post-copy.jsx
+pages/api/publish/
