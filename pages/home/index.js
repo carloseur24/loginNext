@@ -16,6 +16,7 @@ export default function HomePage(props) {
   }, [user])
   const avatar = user?.avatar
   
+  
   return (
     <Layout>
       <div className="page">
