@@ -1,32 +1,37 @@
-import React, { useState } from "react";
-import Layout from "../components/Layout";
-import Router from "next/router";
-import prisma from "../lib/prisma";
-import { makeSerializable } from "../lib/util";
+import React, { useEffect, useState } from "react"
+import Layout from "../components/Layout"
+import Router from "next/router"
+import prisma from "../lib/prisma"
+import { makeSerializable } from "../lib/util"
+import useUser from "hooks/useUser"
 
 const Draft = (props) => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [authorEmail, setAuthorEmail] = useState("");
+  const [title, setTitle] = useState("")
+  const [content, setContent] = useState("")
+  const user = useUser()
+  const authorEmail = user?.email
 
-  const data = [];
-  // props.map(props => options.push(props.user.email))
-  data.push(props.post);
+  useEffect(() => {
+    console.log(user)
+  }, [])
+
+  // const data = []
+  // data.push(props.post)
 
   const submitData = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      const body = { title, content, authorEmail };
+      const body = { title, content, authorEmail }
       await fetch(`/api/post`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
-      });
-      await Router.push("/");
+      })
+      await Router.push("/home")
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
   return (
     <Layout>
       <div className="page">
@@ -34,7 +39,7 @@ const Draft = (props) => {
           <h1 className="h1">Create Your Remember</h1>
           <div className="margin">
             <label className="label" htmlFor="title">
-              Input Your Name
+              Input Remember Name
             </label>
             <input
               id="title"
@@ -45,7 +50,20 @@ const Draft = (props) => {
               value={title}
             />
           </div>
-          <div className="margin">
+          {/* <div className="margin">
+            <label className="label" htmlFor="title">
+              Input Your Name
+            </label>
+            <input
+              id="title"
+              autoFocus
+              onChange={(e) => setAuthorEmail(user?.email)}
+              placeholder="Remember"
+              type="text"
+              value={user?.email}
+            />
+          </div> */}
+          {/* <div className="margin">
             <label className="label" htmlFor="owner">
               Select Your Email
             </label>
@@ -64,7 +82,7 @@ const Draft = (props) => {
                 <option key={idx}>{props.email}</option>
               ))}
             </select>
-          </div>
+          </div> */}
           <div className="margin">
             <label className="label" htmlFor="content">
               Input a tag for remember
@@ -202,12 +220,12 @@ const Draft = (props) => {
         `}
       </style>
     </Layout>
-  );
-};
+  )
+}
 export const getServerSideProps = async () => {
-  const feed = await prisma.user.findMany({});
+  const feed = await prisma.user.findMany({})
   return {
     props: { post: makeSerializable(feed) },
-  };
-};
-export default Draft;
+  }
+}
+export default Draft

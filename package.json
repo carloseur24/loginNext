@@ -37,7 +37,6 @@
     "seed": "node prisma/seed.js"
   },
   "lint-staged": {
-    "*.js": "eslint --cache --fix",
-    "*.{js,css,md}": "prettier --write"
+    "*.js": "eslint --cache --fix"
   }
 }

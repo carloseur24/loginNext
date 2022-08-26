@@ -1,37 +1,36 @@
-import ReactMarkdown from "react-markdown";
-import Layout from "../../components/Layout";
-import Router from "next/router";
-import { makeSerializable } from "../../lib/util";
-import prisma from "../../lib/prisma";
-import { MdDeleteForever } from "react-icons/md";
-import Link from "next/link";
-import { BsCalendar } from "react-icons/bs";
-import { useState } from "react";
+import Layout from "../../components/Layout"
+import Router from "next/router"
+import { makeSerializable } from "../../lib/util"
+import prisma from "../../lib/prisma"
+import { MdDeleteForever } from "react-icons/md"
+import Link from "next/link"
+import { BsCalendar } from "react-icons/bs"
+import { useState } from "react"
 
-async function publish(id) {
-  await fetch(`/api/publish/${id}`, {
-    method: "PUT",
-  });
-  await Router.push("/");
-}
+// async function publish(id) {
+//   await fetch(`/api/publish/${id}`, {
+//     method: "PUT",
+//   })
+//   await Router.push("/")
+// }
 
 async function destroy(id) {
   await fetch(`/api/post/${id}`, {
     method: "DELETE",
-  });
-  await Router.push("/");
+  })
+  await Router.push("/")
 }
 
 const Post = (props) => {
-  const [isHovering, setIsHovering] = useState(false);
+  const [isHovering, setIsHovering] = useState(false)
 
   const handleMouseEnter = () => {
-    setIsHovering(true);
-  };
+    setIsHovering(true)
+  }
 
   const handleMouseLeave = () => {
-    setIsHovering(false);
-  };
+    setIsHovering(false)
+  }
   // if (!props.published) {
   //   title = `${title} (Draft)`
   // }
@@ -46,8 +45,8 @@ const Post = (props) => {
           }}
         >
           <h1>
-            You Don't have anything Remember, you must create one to show it
-            here!
+            You Don&apos;t have anything Remember, you must create one to show
+            it here!
           </h1>
           <a
             style={{
@@ -72,7 +71,7 @@ const Post = (props) => {
         {" "}
         Remembers{" "}
       </h1>
-    );
+    )
   // console.log(props.feed.length)
   return (
     <Layout>
@@ -169,19 +168,19 @@ const Post = (props) => {
         }
       `}</style>
     </Layout>
-  );
-};
+  )
+}
 
 export const getServerSideProps = async (context) => {
   const post = await prisma.post.findMany({
     where: { authorId: Number(context.params.id) },
-  });
+  })
   const user = await prisma.user.findUnique({
     where: { id: Number(context.params.id) },
-  });
+  })
   return {
     props: { feed: makeSerializable(post), user: makeSerializable(user) },
-  };
-};
+  }
+}
 
-export default Post;
+export default Post

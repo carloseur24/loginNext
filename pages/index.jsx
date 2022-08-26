@@ -1,71 +1,79 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import Router from "next/router"
-import Layout from "../components/Layout"
 import Image from "next/image"
 import { BsGithub } from "react-icons/bs"
+import Layout from "components/Layout"
 import { loginWithGitHub, onAuthStateChange } from "../firebase/client"
+import { USER_STATES } from "hooks/useUser"
 
 const SignUp = () => {
+  const [user, setUser] = useState(USER_STATES.NOT_KNOWN)
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
-
-  const [user, setUser] = useState(undefined)
 
   useEffect(() => {
     onAuthStateChange(setUser)
   }, [])
 
-  const reload = () => {
-    window.location.reload(true)
-  }
+  useEffect(() => {
+    user && Router.replace("/home")
+  }, [user])
 
   const handleClick = () => {
-    loginWithGitHub()
-      .then((dataUser) => {
-        setUser(dataUser)
-      })
-      .then(() => reload())
-      .catch((err) => console.log(err))
+    loginWithGitHub().catch((err) => console.log(err))
   }
 
-  const submitData = async (e) => {
+  // const submitData = async (e) => {
+  //   e.preventDefault()
+  //   const body = { name, email }
+  //   try {
+  //     await fetch("/api/user", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(body),
+  //     })
+  //     console.log(email)
+  //     Router.push("/home")
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // }
+  const submitHome = async (e) => {
     e.preventDefault()
-    try {
-      const body = { name, email }
-      await fetch("/api/user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      })
-      await Router.push("/")
-    } catch (error) {
-      console.error(error)
-    }
+    Router.replace("/home")
   }
-
   return (
     <Layout>
       <div className="page">
-        <main>
-          <form onSubmit={submitData}>
-            <div className="flex">
-              <Image
-                src="/devter-logo.png"
-                alt="Picture"
-                layout="fixed"
-                width="50px"
-                height="50px"
-              />
-              <h1 style={{ textAlign: "center", marginTop: "0" }}>SignUp</h1>
-            </div>
-            <div>
-              {user === null && (
-                <button className="github" onClick={handleClick}>
-                  <BsGithub fontSize="20px" />
-                  LogIn with GitHub
-                </button>
-              )}
-              {user && user.avatar && (
+        {user === USER_STATES.NOT_KNOWN ? (
+          <Image
+            src="/devter-logo.png"
+            alt="Picture"
+            layout="fixed"
+            width="50px"
+            height="50px"
+          />
+        ) : (
+          <main>
+            <form onSubmit={submitHome}>
+              <div className="flex">
+                <Image
+                  src="/devter-logo.png"
+                  alt="Picture"
+                  layout="fixed"
+                  width="50px"
+                  height="50px"
+                />
+                <h1 style={{ textAlign: "center", marginTop: "0" }}>SignUp</h1>
+              </div>
+              <div>
+                {user === USER_STATES.NOT_LOGGED && (
+                  <button className="github" onClick={handleClick}>
+                    <BsGithub fontSize="20px" />
+                    LogIn with GitHub
+                  </button>
+                )}
+                {/* {user && user.avatar && (
                 <div className="flexProfile">
                   <img
                     className="img"
@@ -75,30 +83,31 @@ const SignUp = () => {
                   />
                   <strong>{user.userName}</strong>
                 </div>
-              )}
-            </div>
-            <div>
-              <button onClick={reload}>LogIn with Google</button>
-            </div>
-            <input
-              autoFocus
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Name"
-              type="text"
-              value={name}
-            />
-            <input
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email address"
-              type="text"
-              value={email}
-            />
-            <input disabled={!name || !email} type="submit" value="SignUp" />
-            {/* <a className="back" href="#" onClick={() => Router.push('/')}>
+              )} */}
+              </div>
+              <div>
+                <button>LogIn with Google</button>
+              </div>
+              <input
+                autoFocus
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Name"
+                type="text"
+                value={name}
+              />
+              <input
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email address"
+                type="text"
+                value={email}
+              />
+              <input disabled={!name || !email} type="submit" value="SignUp" />
+              {/* <a className="back" href="#" onClick={() => Router.push('/')}>
               Back Home
             </a> */}
-          </form>
-        </main>
+            </form>
+          </main>
+        )}
       </div>
       <style jsx>{`
         .flex {
@@ -122,6 +131,7 @@ const SignUp = () => {
 
         .page {
           margin-top: 2.4rem;
+          margin-bottom: 2.4rem;
           font-size: 20px;
           font-family: "Roboto";
           font-weight: 300;
@@ -135,7 +145,6 @@ const SignUp = () => {
           display: grid;
           place-items: center;
           padding: 3rem;
-
           background-color: #fff;
           height: 100%;
           width: 100%;

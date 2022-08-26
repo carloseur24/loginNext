@@ -4,3 +4,4 @@ pages/drafts.jsx
 pages/index-copy.jsx
 components/Post-copy.jsx
 pages/api/publish/
+.eslintcache
