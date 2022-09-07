@@ -3,9 +3,6 @@ import Router from "next/router"
 import { makeSerializable } from "../../lib/util"
 import prisma from "../../lib/prisma"
 import { MdDeleteForever } from "react-icons/md"
-import Link from "next/link"
-import { BsCalendar } from "react-icons/bs"
-import { useState } from "react"
 
 // async function publish(id) {
 //   await fetch(`/api/publish/${id}`, {
@@ -22,79 +19,35 @@ async function destroy(id) {
 }
 
 const Post = (props) => {
-  const [isHovering, setIsHovering] = useState(false)
-
-  const handleMouseEnter = () => {
-    setIsHovering(true)
-  }
-
-  const handleMouseLeave = () => {
-    setIsHovering(false)
-  }
   // if (!props.published) {
   //   title = `${title} (Draft)`
   // }
-  const remember =
-    props.feed.length === 0 ? (
-      <Link href="/create">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            "align-items": "center",
-          }}
-        >
-          <h1>
-            You Don&apos;t have anything Remember, you must create one to show
-            it here!
-          </h1>
-          <a
-            style={{
-              "text-decoration": "none",
-              color: "black",
-              "font-size": "3rem",
-              padding: "2rem",
-              backgroundColor: isHovering
-                ? "rgba(0, 0, 0, 0.2)"
-                : "rgba(0, 0, 0, 0.04)",
-            }}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            Create Remember
-            <BsCalendar style={{ "margin-left": "0.5rem", color: "#381E80" }} />
-          </a>
-        </div>
-      </Link>
-    ) : (
-      <h1 style={{ "margin-top": "0", "margin-bottom": "2rem" }}>
-        {" "}
-        Remembers{" "}
-      </h1>
-    )
+  const remember = (
+    <h1 style={{ marginTop: "0", marginBottom: "2rem" }}>
+      Remember #{props.feed.id}
+    </h1>
+  )
   // console.log(props.feed.length)
   return (
     <Layout>
       <div className="page2">
         <div>{remember}</div>
       </div>
-      {props.feed.map((props) => (
-        <div className="page" key={props.id}>
-          <div>
-            <h2 className="title">{props.title}</h2>
-            <small className="date">Date ( {props.createdAt} )</small>
-            <small className="tag"> | TAG: {props.content} </small>
-          </div>
-          <div className="actions">
-            {/* {!props.published && (
+      <div className="page" key={props.feed.id}>
+        <div>
+          <h2 className="title">{props.feed.title}</h2>
+          <small className="date">Date ( {props.feed.createdAt} )</small>
+          <small className="tag"> | TAG: {props.feed.content} </small>
+        </div>
+        <div className="actions">
+          {/* {!props.published && (
             <button onClick={() => publish(props.id)}>Publish</button>
           )} */}
-            <button onClick={() => destroy(props.id)}>
-              <MdDeleteForever fontSize={"3rem"} />
-            </button>
-          </div>
+          <button onClick={() => destroy(props.feed.id)}>
+            <MdDeleteForever fontSize={"3rem"} />
+          </button>
         </div>
-      ))}
+      </div>
       <style jsx>{`
         .page {
           margin-top: 1rem;
@@ -172,14 +125,11 @@ const Post = (props) => {
 }
 
 export const getServerSideProps = async (context) => {
-  const post = await prisma.post.findMany({
-    where: { authorId: Number(context.params.id) },
-  })
-  const user = await prisma.user.findUnique({
+  const post = await prisma.post.findUnique({
     where: { id: Number(context.params.id) },
   })
   return {
-    props: { feed: makeSerializable(post), user: makeSerializable(user) },
+    props: { feed: makeSerializable(post) },
   }
 }
 

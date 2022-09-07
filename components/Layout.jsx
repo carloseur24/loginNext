@@ -1,15 +1,15 @@
-import { useRouter } from "next/router"
+// import { useRouter } from "next/router"
 import Fonts from "./Fonts"
 import Header from "./Header"
 
 const Layout = (props) => {
-  const router = useRouter()
-  const isActive = (pathname) => router.pathname === pathname
+  // const router = useRouter()
+  // const isActive = (pathname) => router.pathname === pathname
 
   return (
     <div>
       <Fonts />
-      {isActive("/") || isActive("/home") ? "" : <Header />}
+      <Header />
       <div className="layout">{props.children}</div>
       <style jsx global>{`
         html {
@@ -40,27 +40,7 @@ const Layout = (props) => {
         button {
           cursor: pointer;
         }
-      `}</style>
 
-      <style jsx global>{`
-        html {
-          box-sizing: border-box;
-        }
-
-        *,
-        *:before,
-        *:after {
-          box-sizing: inherit;
-        }
-
-         {
-          /* body {
-          background-image: radial-gradient(#0009ff5d 1px, transparent 1px),
-            radial-gradient(#0009ff5d 1px, transparent 1px);
-          background-position: 0 0, 25px 25px;
-          background-size: 70px 70px;
-        } */
-        }
         .layout {
           overflow-y: auto;
         }
