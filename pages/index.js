@@ -4,14 +4,13 @@ import { makeSerializable } from "lib/util"
 import { HiHome } from "react-icons/hi"
 import { signOut, useSession } from "next-auth/react"
 import Post from "components/Post"
-import { BsCalendar } from "react-icons/bs"
 
 export default function HomePage(props) {
   const [data, setData] = useState("")
   const { data: session, status } = useSession()
   const router = useRouter()
   const dat = makeSerializable(data)
-
+  console.log(Object.values(dat))
   useEffect(() => {
     if (!session) {
       router.push({ pathname: "/login" })
@@ -41,45 +40,36 @@ export default function HomePage(props) {
                 </h2>
               </a>
             </header>
+
+            <h1>Remembers {dat.length}/5</h1>
             {dat.length === 0 ? (
-              status === "loading" ? (
-                <p>Loading</p>
-              ) : (
-                <div>
-                  <h1>
-                    You Don&apos;t have anything Remember, you must create one
-                    to show it here!
-                  </h1>
-                  <a className="anchor">
-                    Create Remember
-                    <BsCalendar
-                      style={{ marginLeft: "0.5rem", color: "#381E80" }}
-                    />
-                  </a>
-                </div>
-              )
+              <h2>
+                You Don&apos;t have anything Remember, you must create one to
+                show it here!
+              </h2>
             ) : (
-              <h1>Remembers {dat.length}/5</h1>
+              Object.values(dat).map((post) => (
+                <div key={post.id} className="post">
+                  <Post post={post} />
+                </div>
+              ))
             )}
-            {dat.length === 0
-              ? ""
-              : data?.map((post) => (
-                  <div key={post.id} className="post">
-                    <Post post={post} />
-                  </div>
-                ))}
             <div>
               <button className="github" onClick={() => signOut()}>
                 LOGOUT
               </button>
             </div>
             <nav>
-              <a
-                className="anchor-create"
-                onClick={() => Router.push("/create")}
-              >
-                <h2>Create</h2>
-              </a>
+              {dat.length === 5 ? (
+                <h2>Delete any remember to create other </h2>
+              ) : (
+                <a
+                  className="anchor-create"
+                  onClick={() => Router.push("/create")}
+                >
+                  <h2>Create</h2>
+                </a>
+              )}
             </nav>
           </section>
         </div>

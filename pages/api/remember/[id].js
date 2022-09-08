@@ -14,7 +14,7 @@ export default async function handle(req, res) {
     },
   })
   if (resultPosts.length === 0) {
-    res.json("resource do not found")
+    res.json("")
   } else {
     res.json(resultPosts)
   }

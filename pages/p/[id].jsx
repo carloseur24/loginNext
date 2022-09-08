@@ -24,7 +24,7 @@ const Post = (props) => {
   // }
   const remember = (
     <h1 style={{ marginTop: "0", marginBottom: "2rem" }}>
-      Remember #{props.feed.id}
+      Remember #{props.id}
     </h1>
   )
   // console.log(props.feed.length)
@@ -33,17 +33,17 @@ const Post = (props) => {
       <div className="page2">
         <div>{remember}</div>
       </div>
-      <div className="page" key={props.feed.id}>
+      <div className="page" key={props.id}>
         <div>
-          <h2 className="title">{props.feed.title}</h2>
-          <small className="date">Date ( {props.feed.createdAt} )</small>
-          <small className="tag"> | TAG: {props.feed.content} </small>
+          <h2 className="title">{props.title}</h2>
+          <small className="date">Date ( {props.createdAt} )</small>
+          <small className="tag"> | TAG: {props.content} </small>
         </div>
         <div className="actions">
           {/* {!props.published && (
             <button onClick={() => publish(props.id)}>Publish</button>
           )} */}
-          <button onClick={() => destroy(props.feed.id)}>
+          <button onClick={() => destroy(props.id)}>
             <MdDeleteForever fontSize={"3rem"} />
           </button>
         </div>
@@ -129,7 +129,7 @@ export const getServerSideProps = async (context) => {
     where: { id: Number(context.params.id) },
   })
   return {
-    props: { feed: makeSerializable(post) },
+    props: makeSerializable(post),
   }
 }
 
