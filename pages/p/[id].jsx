@@ -17,7 +17,6 @@ const Post = (props) => {
       Remember #{props.id}
     </h1>
   )
-
   return (
     <Layout>
       <div className="page2">
