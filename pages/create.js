@@ -1,9 +1,12 @@
-import { useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import Router, { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import { makeSerializable } from "../lib/util"
-import Layout from "../components/Layout"
+import { AiOutlinePoweroff , AiOutlineHome } from "react-icons/ai";
+
+// import Layout from "../components/Layout"
 import prisma from "../lib/prisma"
+import Image from "next/image"
 
 const Draft = (props) => {
   const [title, setTitle] = useState("")
@@ -37,166 +40,133 @@ const Draft = (props) => {
   if (status === "loading") return <p>Loading</p>
   if (session)
     return (
-      <Layout>
-        <div className="page">
-          <form onSubmit={submitData}>
-            <h1 className="h1">Create Your Remember</h1>
-            <div className="margin">
-              <label className="label" htmlFor="title">
-                Input Remember Name
-              </label>
-              <input
-                id="title"
-                autoFocus
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Remember"
-                type="text"
-                value={title}
-              />
+      // <Layout>
+
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">
+
+        <section className="flex h-screen flex-col">
+
+          <header className="flex items-center justify-between py-10">
+
+            {/* MAIN TITTLE */}
+            <div className="flex">
+
+              <div className="my-auto mx-2">
+                <Image
+                src="/devter-logo.png"
+                alt="Picture"
+                layout="fixed"
+                width="35px"
+                height="35px"/>
+              </div>
+              <a className="font text-2xl font-medium ">RecallMe</a>
+
             </div>
-            <div className="margin">
-              <label className="label" htmlFor="content">
-                Input a tag for remember
-              </label>
-              <textarea
-                id="content"
-                cols={50}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder="Content"
-                rows={1}
-                value={content}
-              />
+            {/* MAIN TITTLE */}
+
+            {/* NAVBAR */}
+            <div className="flex items-center text-base leading-5">
+
+              <a className="anchor-home sm:p-4" onClick={() => Router.push("/")}>
+                <a className= "flex font-medium p-1 items-center text-base" href="/"> 
+                <AiOutlineHome /> Home </a>
+              </a>
+
+              <button className= "flex font-medium p-1 items-center text-base sm:p-4" onClick={() => signOut()}>
+              <AiOutlinePoweroff />Logout</button>
+
             </div>
-            <input
-              disabled={!content || !title || (!authorEmail && authorEmail)}
-              type="submit"
-              value="Create"
-            />
-            <a className="back" href="#" onClick={() => Router.push("/")}>
-              Back Home
+            {/* NAVBAR */}
+
+          </header>
+
+          {/* TITTLE */}
+          <div className="flex justify-center my-4">
+            <h1 className="text-xl font-semibold mx-4">Create Your Remember</h1>
+          </div>
+          {/* TITTLE */}
+
+          {/* CONTENT */}
+          <div className="grid ml-5 justify-center space-y-4">
+            <div className="pt-5">
+              <div>
+                <div>
+                  <label className="label text-lg" htmlFor="title">
+                  Enter Name to Remember
+                  </label>
+                </div>
+
+                <div className="px-2 py-3">
+                  <input
+                    id="title"
+                    autoFocus
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Remember"
+                    type="text"
+                    value={title}/>
+                </div>
+              </div>
+            </div>
+
+            <div className="pb-5">
+              <div>
+                <div>
+                  <label className="label text-lg" htmlFor="content">
+                  Input a Tag for Remember
+                  </label>
+                </div>
+
+                <div className="px-2 py-3">
+                  <input
+                    id="content"
+                    cols={50}
+                    onChange={(e) => setContent(e.target.value)}
+                    placeholder="Content"
+                    rows={1}
+                    value={content}/>
+                </div>
+              </div>
+            </div>
+
+          </div>                  
+          {/* CONTENT */}
+
+          {/* BUTTONS  */}
+          <div className="flex flex-row justify-center space-x-8 mt-2">
+
+            <form onSubmit={submitData}>
+              <button className="w-full bg-indigo-400 text-white py-2 rounded-md font-semibold tracking-tight transition duration-500 ease 
+              select-none hover:text-white hover:bg-indigo-600 focus:outline-none focus:shadow-outline px-6" >                  
+                <a disabled={!content || !title || (!authorEmail && authorEmail)}
+                  type="submit"
+                  value="Create"/>Create
+              </button>
+            </form>
+
+            <a className="back " href="#" onClick={() => Router.push("/")}>
+              <button className="w-full bg-indigo-400 text-white py-2 rounded-md font-semibold tracking-tight transition duration-500 ease 
+              select-none hover:text-white hover:bg-indigo-600 focus:outline-none focus:shadow-outline px-6">
+              Return
+              </button>
             </a>
-          </form>
-        </div>
-        <style jsx>
-          {`
-            .page {
-              padding: 3rem;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              transition: box-shadow 0.1s ease-in;
-              border-bottom-right-radius: 10px;
-              margin-left: 15%;
-              margin-right: 15%;
-            }
 
-            input[type="text"],
-            textarea {
-              width: 100%;
-              padding: 7px 10px;
-              height: 42px;
-              background: rgba(0, 0, 0, 0);
-              margin: 0.5rem 0;
-              border: 0;
-              border-bottom: 0.125rem solid rgba(0, 0, 0, 0.2);
-              font-family: "roboto";
-              font-weight: 300;
-            }
-            input[type="text"]:hover,
-            textarea:hover {
-              background: #fff;
-            }
-            .styles {
-              margin: 0.5rem 0;
-              display: inline-block;
-              width: 100%;
-              padding: 7px 10px;
-              height: 42px;
-              outline: 0;
-              border: 0;
-              border-radius: 0;
-              color: black;
-              border: 0;
-              position: relative;
-              transition: all 0.25s ease;
-              border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-            }
-            select:hover {
-              background: #fff;
-            }
+          </div>
+          {/* BUTTONS  */}
 
-            select {
-              background: rgba(0, 0, 0, 0);
-              font-family: "roboto";
-              font-weight: 300;
-              appearance: none;
-              -webkit-appearance: none;
-              -moz-appearance: none;
-            }
+        </section>
 
-            input[type="submit"] {
-              background: #ececec;
-              border: 0;
-              padding: 1rem 2rem;
-              font-family: "Roboto";
-              font-weight: 300;
-            }
+      </div>
 
-            input[type="submit"]:hover {
-              background: rgba(0, 0, 0, 0.05);
-              cursor: pointer;
-            }
+      // </Layout>
 
-            .back {
-              color: black;
-              text-decoration: none;
-              margin-left: 1rem;
-              background: #ececec;
-              border: 0;
-              padding: 1rem 1rem;
-              font-family: "Roboto";
-              font-weight: 300;
-            }
-
-            .back:hover {
-              color: #92140c;
-              background: rgba(0, 0, 0, 0.05);
-              cursor: pointer;
-            }
-
-            .label {
-              text-transform: Capitalize;
-              padding-left: 3px;
-              font-size: 22px;
-              font-family: "Roboto";
-              font-weight: 300;
-            }
-
-            option,
-            select {
-              font-size: 15px;
-            }
-
-            .h1 {
-              text-transform: Capitalize;
-              font-family: "oswald";
-              font-weight: 500;
-            }
-
-            .margin {
-              margin: 2rem;
-              margin-left: 0.5rem;
-              margin-right: 0.5rem;
-            }
-          `}
-        </style>
-      </Layout>
     )
 }
+
 export const getServerSideProps = async () => {
   const feed = await prisma.user.findMany({})
   return {
     props: { post: makeSerializable(feed) },
   }
 }
+
 export default Draft
