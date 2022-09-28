@@ -1,13 +1,14 @@
 import Router from "next/router"
 import { BsFillEyeFill } from "react-icons/bs"
-//
+// Preguntame javier
 const Post = ({ post }) => {
   // const authorName = post.name ? post.name : "Unknown author"
+  const newDate = new Date(post.createdAt)
   return (
     <div className="flex justify-between items-center mb-10">
       {/* DATE */}
       <p className="basis-1/2 date text-gray-600  font-medium ">
-        {post.createdAt}
+        {newDate.toLocaleString()}
         {/* id: {post.authorId} */}
       </p>
       {/* DATE */}

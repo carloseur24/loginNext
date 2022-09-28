@@ -1,15 +1,14 @@
 import { signOut, useSession } from "next-auth/react"
 import Router, { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
-import { makeSerializable } from "../lib/util"
 import { AiOutlinePoweroff, AiOutlineHome } from "react-icons/ai"
 
 // import Layout from "../components/Layout"
-import prisma from "../lib/prisma"
 import Image from "next/image"
 
-const Draft = (props) => {
+const Draft = () => {
   const [title, setTitle] = useState("")
+  const [description, setDescription] = useState("")
   const [content, setContent] = useState("")
   const { data: session, status } = useSession()
   const authorEmail = session?.user?.email
@@ -117,6 +116,27 @@ const Draft = (props) => {
             <div className="pb-5">
               <div>
                 <div>
+                  <label className="label text-lg" htmlFor="description">
+                    Input a Description for Remember
+                  </label>
+                </div>
+
+                <div className="px-2 py-3">
+                  <input
+                    id="description"
+                    cols={50}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Description"
+                    rows={1}
+                    value={description}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="pb-5">
+              <div>
+                <div>
                   <label className="label text-lg" htmlFor="content">
                     Input a Tag for Remember
                   </label>
@@ -167,11 +187,11 @@ const Draft = (props) => {
     )
 }
 
-export const getServerSideProps = async () => {
-  const feed = await prisma.user.findMany({})
-  return {
-    props: { post: makeSerializable(feed) },
-  }
-}
+// export const getServerSideProps = async () => {
+//   const feed = await prisma.user.findMany({})
+//   return {
+//     props: { post: makeSerializable(feed) },
+//   }
+// }
 
 export default Draft

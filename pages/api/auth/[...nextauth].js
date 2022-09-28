@@ -20,4 +20,16 @@ export default NextAuth({
       return url
     },
   },
+  events: {
+    async signIn(message) {
+      await fetch(`http://localhost:3000/api/accountCreated`).then((res) =>
+        res.json("successfully")
+      )
+    },
+    async signOut(message) {
+      await fetch(`http://localhost:3000/api/accountCreated`).then((res) =>
+        res.json("successfully")
+      )
+    },
+  },
 })

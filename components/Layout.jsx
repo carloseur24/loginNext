@@ -1,5 +1,5 @@
 // import { useRouter } from "next/router"
-import Router, { useRouter } from "next/router"
+import Router from "next/router"
 import { AiOutlinePoweroff, AiOutlineHome } from "react-icons/ai"
 import { signOut } from "next-auth/react"
 import Image from "next/image"
