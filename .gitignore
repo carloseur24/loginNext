@@ -6,3 +6,4 @@ components/Post-copy.jsx
 pages/api/publish/
 .eslintcache
 .mailing
+.env.local
