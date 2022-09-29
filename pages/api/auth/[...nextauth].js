@@ -21,16 +21,16 @@ export default NextAuth({
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-  events: {
-    async signIn(message) {
-      await fetch(`http://localhost:3000/api/accountCreated`).then((res) =>
-        res.json("successfully")
-      )
-    },
-    async signOut(message) {
-      await fetch(`http://localhost:3000/api/accountCreated`).then((res) =>
-        res.json("successfully")
-      )
-    },
-  },
+  // events: {
+  //   async signIn(message) {
+  //     await fetch(`http://localhost:3000/api/accountCreated`).then((res) =>
+  //       res.json("successfully")
+  //     )
+  //   },
+  //   async signOut(message) {
+  //     await fetch(`http://localhost:3000/api/accountCreated`).then((res) =>
+  //       res.json("successfully")
+  //     )
+  //   },
+  // },
 })
