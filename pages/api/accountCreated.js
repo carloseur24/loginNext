@@ -1,9 +1,8 @@
-import { NextApiResponse } from "next"
 import sendMail from "../../emails"
 import Welcome from "../../emails/Welcome"
 // import AccountCreated from "../../emails/previews/AccountCreated"
 
-export default async function handle(req, res = NextApiResponse) {
+export default async function handle(req, res ) {
   sendMail({
     to: "carloseur24@gmail.com",
     subject: "Thanks you to Create a new account",
