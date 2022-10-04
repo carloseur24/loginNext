@@ -4,7 +4,7 @@ import { buildSendMail } from "mailing-core"
 const transport = nodemailer.createTransport({
   pool: true,
   host: "smtp.sendgrid.net",
-  port: 465,
+  port: 587,
   secure: true, // use TLS
   auth: {
     user: "apikey",
