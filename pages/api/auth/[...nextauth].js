@@ -23,8 +23,8 @@ export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   events: {
     async signIn(message) {
-      await fetch(`${process.env.SENDER}/api/accountCreated`).then((res) =>
-        res.json("successfully")
+      await fetch(`${process.env.NEXTAUTH_URL}/api/accountCreated`).then(
+        (res) => res.json("successfully")
       )
     },
     async signOut(message) {
