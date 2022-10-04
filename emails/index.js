@@ -3,18 +3,18 @@ import { buildSendMail } from "mailing-core"
 
 const transport = nodemailer.createTransport({
   pool: true,
-  host: "smtp.sendgrid.net",
-  port: 587,
+  host: "smtp.gmail.com",
+  port: 465,
   secure: true, // use TLS
   auth: {
-    user: "apikey",
+    user: process.env.EMAIL,
     pass: process.env.PASS,
   },
 })
 
 const sendMail = buildSendMail({
   transport,
-  defaultFrom: "Notificaciones Dvlance <notificaciones@dvlance.com>",
+  defaultFrom: "Carlos Test <carloseur24@gmail.com>",
 })
 
 export default sendMail
