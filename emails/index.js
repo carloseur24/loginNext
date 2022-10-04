@@ -2,11 +2,12 @@ import nodemailer from "nodemailer"
 import { buildSendMail } from "mailing-core"
 
 const transport = nodemailer.createTransport({
-  host: "smtp.gmail.com",
+  pool: true,
+  host: "smtp.sendgrid.net",
   port: 465,
   secure: true, // use TLS
   auth: {
-    user: process.env.EMAIL,
+    user: "apikey",
     pass: process.env.PASS,
   },
 })
