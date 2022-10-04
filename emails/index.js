@@ -14,7 +14,7 @@ const transport = nodemailer.createTransport({
 
 const sendMail = buildSendMail({
   transport,
-  defaultFrom: "Carlos Test <carloseur24@gmail.com>",
+  defaultFrom: "Notificaciones Dvlance <notificaciones@dvlance.com>",
 })
 
 export default sendMail
